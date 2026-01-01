@@ -1,0 +1,855 @@
+<!-- frontend/index.html - COMPLETE FRONTEND -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyBuzz DataHub - Modern Data Bundles</title>
+    <style>
+        :root {
+            --primary: #7f5af0;
+            --primary-dark: #6d4cd8;
+            --secondary: #4dabf7;
+            --bg-dark: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --text-light: #f8fafc;
+            --border: rgba(148, 163, 184, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--text-light);
+        }
+        
+        .logo i {
+            color: var(--primary);
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            background: rgba(127, 90, 240, 0.1);
+        }
+        
+        .nav-link.active {
+            background: var(--primary);
+        }
+        
+        /* Auth Pages */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            padding: 2rem;
+        }
+        
+        .auth-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 450px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .auth-card h2 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(127, 90, 240, 0.3);
+        }
+        
+        .auth-links {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .auth-links a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+        
+        /* Dashboard */
+        .dashboard {
+            padding: 2rem 0;
+        }
+        
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dashboard-header .subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+        }
+        
+        .stat-card.wallet-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .badge-primary {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .balance-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .balance-amount .currency {
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .btn-light {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 300px;
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 9999;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast-success {
+            border-left: 4px solid #22c55e;
+        }
+        
+        .toast-error {
+            border-left: 4px solid #ef4444;
+        }
+        
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+        
+        .toast-success .toast-icon {
+            color: #22c55e;
+        }
+        
+        .toast-error .toast-icon {
+            color: #ef4444;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="/" class="logo">
+                <i class="fas fa-bolt"></i>
+                BuyBuzz<span>DataHub</span>
+            </a>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link active" onclick="loadPage('home')">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="#dashboard" class="nav-link" onclick="loadPage('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="#wallet" class="nav-link" onclick="loadPage('wallet')">
+                    <i class="fas fa-wallet"></i> Wallet
+                </a>
+                <a href="#login" class="nav-link" id="authLink" onclick="loadPage('login')">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            </div>
+            
+            <button class="btn btn-primary mobile-menu-btn" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Home page will be loaded here -->
+        <div class="container auth-container">
+            <div class="auth-card">
+                <h2>Welcome to BuyBuzz DataHub</h2>
+                <p style="text-align: center; margin-bottom: 2rem; color: #94a3b8;">
+                    Modern platform for data bundles, results vouchers, and wallet management
+                </p>
+                <div style="display: grid; gap: 1rem;">
+                    <button class="btn btn-primary" onclick="loadPage('login')">
+                        <i class="fas fa-sign-in-alt"></i> Login to Continue
+                    </button>
+                    <button class="btn btn-light" onclick="loadPage('signup')">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <script>
+        // API Configuration
+        const API_BASE = 'http://localhost:3000/api';
+        let currentUser = null;
+        let authToken = localStorage.getItem('token');
+
+        // Show Toast Notification
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                </div>
+                <div>${message}</div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        // Load Page Content
+        async function loadPage(page) {
+            const mainContent = document.getElementById('mainContent');
+            
+            switch(page) {
+                case 'home':
+                    mainContent.innerHTML = `
+                        <div class="container auth-container">
+                            <div class="auth-card">
+                                <h2>Welcome to BuyBuzz DataHub</h2>
+                                <p style="text-align: center; margin-bottom: 2rem; color: #94a3b8;">
+                                    Modern platform for data bundles, results vouchers, and wallet management
+                                </p>
+                                <div style="display: grid; gap: 1rem;">
+                                    <button class="btn btn-primary" onclick="loadPage('login')">
+                                        <i class="fas fa-sign-in-alt"></i> Login to Continue
+                                    </button>
+                                    <button class="btn btn-light" onclick="loadPage('signup')">
+                                        <i class="fas fa-user-plus"></i> Create Account
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'signup':
+                    mainContent.innerHTML = `
+                        <div class="container auth-container">
+                            <div class="auth-card">
+                                <h2>Create Account</h2>
+                                <form id="signupForm" onsubmit="handleSignup(event)">
+                                    <div class="form-group">
+                                        <label for="fullName">Full Name</label>
+                                        <input type="text" id="fullName" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email Address</label>
+                                        <input type="email" id="email" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone Number</label>
+                                        <input type="tel" id="phone" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" id="password" class="form-control" required minlength="8">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirmPassword">Confirm Password</label>
+                                        <input type="password" id="confirmPassword" class="form-control" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-user-plus"></i> Create Account
+                                    </button>
+                                </form>
+                                <div class="auth-links">
+                                    <p>Already have an account? <a href="#" onclick="loadPage('login')">Login here</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'login':
+                    mainContent.innerHTML = `
+                        <div class="container auth-container">
+                            <div class="auth-card">
+                                <h2>Login to Your Account</h2>
+                                <form id="loginForm" onsubmit="handleLogin(event)">
+                                    <div class="form-group">
+                                        <label for="loginEmail">Email Address</label>
+                                        <input type="email" id="loginEmail" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="loginPassword">Password</label>
+                                        <input type="password" id="loginPassword" class="form-control" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-sign-in-alt"></i> Login
+                                    </button>
+                                </form>
+                                <div class="auth-links">
+                                    <p>Don't have an account? <a href="#" onclick="loadPage('signup')">Sign up here</a></p>
+                                    <p><a href="#">Forgot password?</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'dashboard':
+                    if (!authToken) {
+                        showToast('Please login first', 'error');
+                        loadPage('login');
+                        return;
+                    }
+                    
+                    mainContent.innerHTML = `
+                        <div class="container dashboard">
+                            <div class="dashboard-header">
+                                <h1 id="greeting">Loading...</h1>
+                                <p class="subtitle">Welcome to BuyBuzz DataHub</p>
+                            </div>
+                            
+                            <div class="stats-grid">
+                                <!-- Wallet Card -->
+                                <div class="stat-card wallet-card">
+                                    <div class="card-header">
+                                        <h3><i class="fas fa-wallet"></i> Wallet Balance</h3>
+                                        <span class="badge badge-primary" id="walletLevel">Bronze</span>
+                                    </div>
+                                    <div class="balance-amount">
+                                        <span class="currency">GHS</span>
+                                        <span id="walletBalance">0.00</span>
+                                    </div>
+                                    <div class="card-actions">
+                                        <button class="btn btn-light" onclick="loadPage('wallet')">
+                                            <i class="fas fa-history"></i> History
+                                        </button>
+                                        <button class="btn btn-light" onclick="showTopupModal()">
+                                            <i class="fas fa-plus"></i> Top Up
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Orders Card -->
+                                <div class="stat-card">
+                                    <h3><i class="fas fa-shopping-cart"></i> Total Orders</h3>
+                                    <div class="stat-number" id="totalOrders">0</div>
+                                    <div style="margin-top: 1rem;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                            <span>Completed:</span>
+                                            <span id="completedOrders">0</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span>Pending:</span>
+                                            <span id="pendingOrders">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Sales Card -->
+                                <div class="stat-card">
+                                    <h3><i class="fas fa-chart-line"></i> Total Sales</h3>
+                                    <div class="stat-number">GHS <span id="totalSales">0.00</span></div>
+                                    <div style="margin-top: 1rem; color: #22c55e;">
+                                        <i class="fas fa-arrow-up"></i> 12% from last week
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Recent Activity -->
+                            <div class="stat-card">
+                                <h3>Recent Activity</h3>
+                                <div id="recentActivity">
+                                    <p style="text-align: center; padding: 2rem; color: #94a3b8;">
+                                        Loading activity...
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    loadDashboardData();
+                    break;
+
+                case 'wallet':
+                    if (!authToken) {
+                        showToast('Please login first', 'error');
+                        loadPage('login');
+                        return;
+                    }
+                    
+                    mainContent.innerHTML = `
+                        <div class="container dashboard">
+                            <div class="dashboard-header">
+                                <h1>Wallet Management</h1>
+                                <p class="subtitle">Manage your funds and transactions</p>
+                            </div>
+                            
+                            <div class="stats-grid">
+                                <div class="stat-card wallet-card">
+                                    <div class="card-header">
+                                        <h3><i class="fas fa-wallet"></i> Current Balance</h3>
+                                        <span class="badge badge-primary">Gold</span>
+                                    </div>
+                                    <div class="balance-amount">
+                                        <span class="currency">GHS</span>
+                                        <span id="currentBalance">0.00</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <h3><i class="fas fa-exchange-alt"></i> Quick Actions</h3>
+                                    <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                                        <button class="btn btn-primary" onclick="showTopupModal()">
+                                            <i class="fas fa-plus"></i> Add Funds
+                                        </button>
+                                        <button class="btn btn-light" onclick="showTransferModal()">
+                                            <i class="fas fa-paper-plane"></i> Transfer Funds
+                                        </button>
+                                        <button class="btn btn-light">
+                                            <i class="fas fa-history"></i> Transaction History
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <h3>Transaction History</h3>
+                                <div id="transactionHistory">
+                                    <p style="text-align: center; padding: 2rem; color: #94a3b8;">
+                                        Loading transactions...
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    loadWalletData();
+                    break;
+            }
+            
+            updateNavLinks();
+        }
+
+        // Handle Signup
+        async function handleSignup(event) {
+            event.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showToast('Passwords do not match', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        full_name: fullName,
+                        email: email,
+                        phone: phone,
+                        password: password,
+                        confirm_password: confirmPassword
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    localStorage.setItem('token', data.token);
+                    authToken = data.token;
+                    currentUser = data.user;
+                    
+                    showToast('Account created successfully!', 'success');
+                    loadPage('dashboard');
+                } else {
+                    showToast(data.error || 'Signup failed', 'error');
+                }
+            } catch (error) {
+                showToast('Network error. Please try again.', 'error');
+            }
+        }
+
+        // Handle Login
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    localStorage.setItem('token', data.token);
+                    authToken = data.token;
+                    currentUser = data.user;
+                    
+                    showToast('Login successful!', 'success');
+                    loadPage('dashboard');
+                } else {
+                    showToast(data.error || 'Login failed', 'error');
+                }
+            } catch (error) {
+                showToast('Network error. Please try again.', 'error');
+            }
+        }
+
+        // Load Dashboard Data
+        async function loadDashboardData() {
+            try {
+                const response = await fetch(`${API_BASE}/dashboard`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const user = data.data.user;
+                    const wallet = data.data.wallet;
+                    const stats = data.data.stats;
+                    
+                    // Update greeting based on time
+                    const hour = new Date().getHours();
+                    let greeting = 'Good Evening';
+                    if (hour < 12) greeting = 'Good Morning';
+                    else if (hour < 18) greeting = 'Good Afternoon';
+                    
+                    document.getElementById('greeting').textContent = `${greeting}, ${user.full_name}`;
+                    document.getElementById('walletBalance').textContent = wallet.balance.toFixed(2);
+                    document.getElementById('walletLevel').textContent = wallet.level;
+                    document.getElementById('totalOrders').textContent = stats.total_orders;
+                    document.getElementById('completedOrders').textContent = stats.completed_orders;
+                    document.getElementById('pendingOrders').textContent = stats.pending_orders;
+                    document.getElementById('totalSales').textContent = stats.total_sales.toFixed(2);
+                    
+                    // Update recent activity
+                    const activityList = data.data.recent_activity.map(activity => `
+                        <div style="padding: 1rem; border-bottom: 1px solid rgba(148, 163, 184, 0.1);">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>${activity.action}</span>
+                                <span style="color: #94a3b8;">${activity.time}</span>
+                            </div>
+                            ${activity.amount ? `<div style="color: #22c55e; font-weight: 600;">${activity.amount}</div>` : ''}
+                        </div>
+                    `).join('');
+                    
+                    document.getElementById('recentActivity').innerHTML = activityList;
+                }
+            } catch (error) {
+                showToast('Error loading dashboard data', 'error');
+            }
+        }
+
+        // Load Wallet Data
+        async function loadWalletData() {
+            try {
+                const response = await fetch(`${API_BASE}/wallet`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('currentBalance').textContent = data.wallet.balance.toFixed(2);
+                    
+                    // Display transactions
+                    if (data.transactions && data.transactions.length > 0) {
+                        const transactionsHTML = data.transactions.map(tx => `
+                            <div style="padding: 1rem; border-bottom: 1px solid rgba(148, 163, 184, 0.1);">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>
+                                        <div style="font-weight: 600;">${tx.type}</div>
+                                        <div style="color: #94a3b8; font-size: 0.875rem;">${tx.description || 'No description'}</div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="font-weight: 600; color: ${tx.type === 'credit' ? '#22c55e' : '#ef4444'}">
+                                            ${tx.type === 'credit' ? '+' : '-'}GHS ${tx.amount}
+                                        </div>
+                                        <div style="color: #94a3b8; font-size: 0.875rem;">${new Date(tx.created_at).toLocaleDateString()}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('');
+                        
+                        document.getElementById('transactionHistory').innerHTML = transactionsHTML;
+                    }
+                }
+            } catch (error) {
+                showToast('Error loading wallet data', 'error');
+            }
+        }
+
+        // Update Navigation Links
+        function updateNavLinks() {
+            const authLink = document.getElementById('authLink');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            if (authToken) {
+                authLink.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+                authLink.onclick = handleLogout;
+            } else {
+                authLink.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                authLink.onclick = () => loadPage('login');
+            }
+        }
+
+        // Handle Logout
+        function handleLogout() {
+            localStorage.removeItem('token');
+            authToken = null;
+            currentUser = null;
+            showToast('Logged out successfully', 'success');
+            loadPage('home');
+        }
+
+        // Toggle Mobile Menu
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Show Topup Modal
+        function showTopupModal() {
+            alert('Topup functionality would be implemented here with Paystack integration');
+        }
+
+        // Show Transfer Modal
+        function showTransferModal() {
+            alert('Wallet-to-wallet transfer functionality would be implemented here');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            if (authToken) {
+                loadPage('dashboard');
+            } else {
+                loadPage('home');
+            }
+        });
+    </script>
+</body>
+</html>
