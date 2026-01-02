@@ -1,4 +1,4 @@
-<!-- frontend/index.html - COMPLETE FRONTEND -->
+<!-- frontend/index.html - UPDATED COMPLETE FRONTEND -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,9 +10,13 @@
             --primary: #7f5af0;
             --primary-dark: #6d4cd8;
             --secondary: #4dabf7;
+            --accent: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
             --bg-dark: #0f172a;
             --bg-card: rgba(30, 41, 59, 0.7);
             --text-light: #f8fafc;
+            --text-muted: #94a3b8;
             --border: rgba(148, 163, 184, 0.2);
         }
         
@@ -27,6 +31,19 @@
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: var(--text-light);
             min-height: 100vh;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(127, 90, 240, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(77, 171, 247, 0.1) 0%, transparent 50%);
+            z-index: -1;
         }
         
         .container {
@@ -72,7 +89,7 @@
         
         .nav-menu {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             align-items: center;
         }
         
@@ -83,6 +100,9 @@
             padding: 0.5rem 1rem;
             border-radius: 8px;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .nav-link:hover {
@@ -91,6 +111,17 @@
         
         .nav-link.active {
             background: var(--primary);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1.2rem;
         }
         
         /* Auth Pages */
@@ -110,11 +141,13 @@
             width: 100%;
             max-width: 450px;
             backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
         
         .auth-card h2 {
             margin-bottom: 1.5rem;
             text-align: center;
+            font-size: 1.8rem;
         }
         
         .form-group {
@@ -125,6 +158,7 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
+            color: var(--text-muted);
         }
         
         .form-control {
@@ -135,11 +169,13 @@
             border-radius: 8px;
             color: var(--text-light);
             font-size: 1rem;
+            transition: border-color 0.3s;
         }
         
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(127, 90, 240, 0.1);
         }
         
         .btn {
@@ -154,12 +190,12 @@
             cursor: pointer;
             transition: all 0.3s;
             font-size: 1rem;
+            text-decoration: none;
         }
         
         .btn-primary {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
-            width: 100%;
         }
         
         .btn-primary:hover {
@@ -167,9 +203,33 @@
             box-shadow: 0 10px 25px rgba(127, 90, 240, 0.3);
         }
         
+        .btn-success {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-light {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .btn-light:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-block {
+            width: 100%;
+        }
+        
         .auth-links {
             text-align: center;
             margin-top: 1.5rem;
+            color: var(--text-muted);
         }
         
         .auth-links a {
@@ -189,10 +249,14 @@
         .dashboard-header h1 {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .dashboard-header .subtitle {
-            color: #94a3b8;
+            color: var(--text-muted);
             font-size: 1.1rem;
         }
         
@@ -214,11 +278,30 @@
         .stat-card:hover {
             border-color: var(--primary);
             transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
         
         .stat-card.wallet-card {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .wallet-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1%, transparent 20%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .card-header {
@@ -226,6 +309,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
+            position: relative;
         }
         
         .badge {
@@ -239,10 +323,21 @@
             background: rgba(255, 255, 255, 0.2);
         }
         
+        .badge-success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+        
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+        
         .balance-amount {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 1rem;
+            position: relative;
         }
         
         .balance-amount .currency {
@@ -254,17 +349,67 @@
             display: flex;
             gap: 1rem;
             margin-top: 1rem;
-        }
-        
-        .btn-light {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            position: relative;
         }
         
         .stat-number {
             font-size: 2rem;
             font-weight: 700;
             margin: 0.5rem 0;
+        }
+        
+        /* Data Packages Grid */
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .package-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .package-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .package-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .package-icon {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .package-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .package-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 1rem 0;
+        }
+        
+        .package-details {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
         }
         
         /* Toast */
@@ -280,9 +425,11 @@
             align-items: center;
             gap: 1rem;
             min-width: 300px;
+            max-width: 400px;
             transform: translateX(400px);
             transition: transform 0.3s;
             z-index: 9999;
+            backdrop-filter: blur(10px);
         }
         
         .toast.show {
@@ -290,11 +437,15 @@
         }
         
         .toast-success {
-            border-left: 4px solid #22c55e;
+            border-left: 4px solid var(--accent);
         }
         
         .toast-error {
-            border-left: 4px solid #ef4444;
+            border-left: 4px solid var(--danger);
+        }
+        
+        .toast-info {
+            border-left: 4px solid var(--secondary);
         }
         
         .toast-icon {
@@ -302,27 +453,202 @@
         }
         
         .toast-success .toast-icon {
-            color: #22c55e;
+            color: var(--accent);
         }
         
         .toast-error .toast-icon {
-            color: #ef4444;
+            color: var(--danger);
+        }
+        
+        .toast-info .toast-icon {
+            color: var(--secondary);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: flex-end;
+        }
+        
+        /* Network Tabs */
+        .network-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+        
+        .network-tab {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .network-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .network-tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Orders Table */
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .orders-table th {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 2px solid var(--border);
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        
+        .orders-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .orders-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
         }
         
         /* Responsive */
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg-card);
+                flex-direction: column;
+                padding: 1rem;
+                border-top: 1px solid var(--border);
+                backdrop-filter: blur(10px);
+            }
+            
+            .nav-menu.active {
+                display: flex;
             }
             
             .mobile-menu-btn {
                 display: block;
             }
             
-            .stats-grid {
+            .stats-grid,
+            .packages-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .network-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .toast {
+                min-width: calc(100% - 40px);
+                max-width: calc(100% - 40px);
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
         }
+        
+        /* Loading Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin: 2rem auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Network Colors */
+        .mtn-color { color: #ffcc00; }
+        .telecel-color { color: #ff0000; }
+        .airteltigo-color { color: #ff6600; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -337,21 +663,27 @@
             </a>
             
             <div class="nav-menu" id="navMenu">
-                <a href="#home" class="nav-link active" onclick="loadPage('home')">
+                <a href="#home" class="nav-link" onclick="loadPage('home')">
                     <i class="fas fa-home"></i> Home
                 </a>
                 <a href="#dashboard" class="nav-link" onclick="loadPage('dashboard')">
                     <i class="fas fa-tachometer-alt"></i> Dashboard
                 </a>
+                <a href="#data" class="nav-link" onclick="loadPage('data')">
+                    <i class="fas fa-wifi"></i> Buy Data
+                </a>
                 <a href="#wallet" class="nav-link" onclick="loadPage('wallet')">
                     <i class="fas fa-wallet"></i> Wallet
+                </a>
+                <a href="#orders" class="nav-link" onclick="loadPage('orders')">
+                    <i class="fas fa-history"></i> Orders
                 </a>
                 <a href="#login" class="nav-link" id="authLink" onclick="loadPage('login')">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </a>
             </div>
             
-            <button class="btn btn-primary mobile-menu-btn" onclick="toggleMenu()">
+            <button class="mobile-menu-btn" onclick="toggleMenu()">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -359,33 +691,22 @@
 
     <!-- Main Content -->
     <main id="mainContent">
-        <!-- Home page will be loaded here -->
-        <div class="container auth-container">
-            <div class="auth-card">
-                <h2>Welcome to BuyBuzz DataSpot</h2>
-                <p style="text-align: center; margin-bottom: 2rem; color: #94a3b8;">
-                    Modern platform for data bundles, results vouchers, and wallet management
-                </p>
-                <div style="display: grid; gap: 1rem;">
-                    <button class="btn btn-primary" onclick="loadPage('login')">
-                        <i class="fas fa-sign-in-alt"></i> Login to Continue
-                    </button>
-                    <button class="btn btn-light" onclick="loadPage('signup')">
-                        <i class="fas fa-user-plus"></i> Create Account
-                    </button>
-                </div>
-            </div>
-        </div>
+        <!-- Content will be loaded here -->
     </main>
 
     <!-- Toast Container -->
     <div id="toastContainer"></div>
+
+    <!-- Modals Container -->
+    <div id="modalsContainer"></div>
 
     <script>
         // API Configuration
         const API_BASE = 'http://localhost:3000/api';
         let currentUser = null;
         let authToken = localStorage.getItem('token');
+        let currentNetwork = 'MTN';
+        let availableBundles = {};
 
         // Show Toast Notification
         function showToast(message, type = 'info') {
@@ -409,9 +730,58 @@
             }, 5000);
         }
 
+        // Show Modal
+        function showModal(title, content, buttons = []) {
+            const modalsContainer = document.getElementById('modalsContainer');
+            const modal = document.createElement('div');
+            modal.className = 'modal show';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>${title}</h3>
+                        <button class="close-modal" onclick="closeModal(this)">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        ${content}
+                    </div>
+                    ${buttons.length > 0 ? `
+                        <div class="modal-footer">
+                            ${buttons.map(btn => `
+                                <button class="btn ${btn.class || 'btn-light'}" onclick="${btn.onclick}">
+                                    ${btn.icon ? `<i class="${btn.icon}"></i>` : ''} ${btn.text}
+                                </button>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            modalsContainer.appendChild(modal);
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+
+        // Close Modal
+        function closeModal(btn) {
+            btn.closest('.modal').remove();
+        }
+
         // Load Page Content
         async function loadPage(page) {
             const mainContent = document.getElementById('mainContent');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            // Update active nav link
+            navLinks.forEach(link => link.classList.remove('active'));
+            document.querySelector(`[href="#${page}"]`)?.classList.add('active');
+            
+            // Close mobile menu
+            document.getElementById('navMenu').classList.remove('active');
             
             switch(page) {
                 case 'home':
@@ -420,7 +790,7 @@
                             <div class="auth-card">
                                 <h2>Welcome to BuyBuzz DataSpot</h2>
                                 <p style="text-align: center; margin-bottom: 2rem; color: #94a3b8;">
-                                    Modern platform for data bundles, results vouchers, and wallet management
+                                    Modern platform for data bundles, wallet management, and mobile services
                                 </p>
                                 <div style="display: grid; gap: 1rem;">
                                     <button class="btn btn-primary" onclick="loadPage('login')">
@@ -428,6 +798,9 @@
                                     </button>
                                     <button class="btn btn-light" onclick="loadPage('signup')">
                                         <i class="fas fa-user-plus"></i> Create Account
+                                    </button>
+                                    <button class="btn btn-light" onclick="loadPage('data')">
+                                        <i class="fas fa-wifi"></i> View Data Bundles
                                     </button>
                                 </div>
                             </div>
@@ -451,7 +824,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="phone">Phone Number</label>
-                                        <input type="tel" id="phone" class="form-control" required>
+                                        <input type="tel" id="phone" class="form-control" required placeholder="+233XXXXXXXXX">
                                     </div>
                                     <div class="form-group">
                                         <label for="password">Password</label>
@@ -461,7 +834,7 @@
                                         <label for="confirmPassword">Confirm Password</label>
                                         <input type="password" id="confirmPassword" class="form-control" required>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary btn-block">
                                         <i class="fas fa-user-plus"></i> Create Account
                                     </button>
                                 </form>
@@ -487,7 +860,7 @@
                                         <label for="loginPassword">Password</label>
                                         <input type="password" id="loginPassword" class="form-control" required>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary btn-block">
                                         <i class="fas fa-sign-in-alt"></i> Login
                                     </button>
                                 </form>
@@ -511,7 +884,7 @@
                         <div class="container dashboard">
                             <div class="dashboard-header">
                                 <h1 id="greeting">Loading...</h1>
-                                <p class="subtitle">Welcome to BuyBuzz DataHub</p>
+                                <p class="subtitle">Welcome to BuyBuzz DataSpot Dashboard</p>
                             </div>
                             
                             <div class="stats-grid">
@@ -532,12 +905,18 @@
                                         <button class="btn btn-light" onclick="showTopupModal()">
                                             <i class="fas fa-plus"></i> Top Up
                                         </button>
+                                        <button class="btn btn-light" onclick="loadPage('data')">
+                                            <i class="fas fa-wifi"></i> Buy Data
+                                        </button>
                                     </div>
                                 </div>
                                 
                                 <!-- Orders Card -->
                                 <div class="stat-card">
-                                    <h3><i class="fas fa-shopping-cart"></i> Total Orders</h3>
+                                    <div class="card-header">
+                                        <h3><i class="fas fa-shopping-cart"></i> Total Orders</h3>
+                                        <span class="badge badge-success" id="ordersStatus">0</span>
+                                    </div>
                                     <div class="stat-number" id="totalOrders">0</div>
                                     <div style="margin-top: 1rem;">
                                         <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
@@ -551,29 +930,96 @@
                                     </div>
                                 </div>
                                 
-                                <!-- Sales Card -->
+                                <!-- Quick Actions Card -->
                                 <div class="stat-card">
-                                    <h3><i class="fas fa-chart-line"></i> Total Sales</h3>
-                                    <div class="stat-number">GHS <span id="totalSales">0.00</span></div>
-                                    <div style="margin-top: 1rem; color: #22c55e;">
-                                        <i class="fas fa-arrow-up"></i> 12% from last week
+                                    <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                                    <div style="display: grid; gap: 0.75rem; margin-top: 1rem;">
+                                        <button class="btn btn-primary" onclick="loadPage('data')">
+                                            <i class="fas fa-wifi"></i> Buy Data Bundle
+                                        </button>
+                                        <button class="btn btn-light" onclick="showTopupModal()">
+                                            <i class="fas fa-plus"></i> Fund Wallet
+                                        </button>
+                                        <button class="btn btn-light" onclick="loadPage('orders')">
+                                            <i class="fas fa-history"></i> View Orders
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- Recent Activity -->
                             <div class="stat-card">
-                                <h3>Recent Activity</h3>
+                                <div class="card-header">
+                                    <h3>Recent Activity</h3>
+                                    <button class="btn btn-light btn-sm" onclick="loadPage('wallet')">View All</button>
+                                </div>
                                 <div id="recentActivity">
-                                    <p style="text-align: center; padding: 2rem; color: #94a3b8;">
-                                        Loading activity...
-                                    </p>
+                                    <div class="spinner"></div>
                                 </div>
                             </div>
                         </div>
                     `;
                     
-                    loadDashboardData();
+                    await loadDashboardData();
+                    break;
+
+                case 'data':
+                    mainContent.innerHTML = `
+                        <div class="container dashboard">
+                            <div class="dashboard-header">
+                                <h1>Buy Data Bundles</h1>
+                                <p class="subtitle">Purchase data bundles for MTN, Telecel, and AirtelTigo</p>
+                            </div>
+                            
+                            ${!authToken ? `
+                                <div class="auth-card" style="max-width: 600px; margin: 0 auto;">
+                                    <h3 style="text-align: center; margin-bottom: 1rem;">Login Required</h3>
+                                    <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">
+                                        Please login to purchase data bundles
+                                    </p>
+                                    <div style="display: grid; gap: 1rem;">
+                                        <button class="btn btn-primary" onclick="loadPage('login')">
+                                            <i class="fas fa-sign-in-alt"></i> Login
+                                        </button>
+                                        <button class="btn btn-light" onclick="loadPage('signup')">
+                                            <i class="fas fa-user-plus"></i> Create Account
+                                        </button>
+                                    </div>
+                                </div>
+                            ` : `
+                                <div class="network-tabs" id="networkTabs">
+                                    <button class="network-tab active" onclick="switchNetwork('MTN')">
+                                        <i class="fas fa-sim-card mtn-color"></i> MTN
+                                    </button>
+                                    <button class="network-tab" onclick="switchNetwork('Telecel')">
+                                        <i class="fas fa-sim-card telecel-color"></i> Telecel
+                                    </button>
+                                    <button class="network-tab" onclick="switchNetwork('AirtelTigo')">
+                                        <i class="fas fa-sim-card airteltigo-color"></i> AirtelTigo
+                                    </button>
+                                </div>
+                                
+                                <div id="bundlesContainer">
+                                    <div class="spinner"></div>
+                                </div>
+                                
+                                <div class="stat-card" style="margin-top: 2rem;">
+                                    <h3><i class="fas fa-info-circle"></i> How to Purchase</h3>
+                                    <ol style="color: var(--text-muted); line-height: 2; padding-left: 1.5rem; margin-top: 1rem;">
+                                        <li>Select your network (MTN, Telecel, or AirtelTigo)</li>
+                                        <li>Choose the data bundle size you want</li>
+                                        <li>Enter the phone number to receive the data</li>
+                                        <li>Confirm purchase - amount will be deducted from your wallet</li>
+                                        <li>Data will be delivered within 5 minutes</li>
+                                    </ol>
+                                </div>
+                            `}
+                        </div>
+                    `;
+                    
+                    if (authToken) {
+                        await loadDataBundles();
+                    }
                     break;
 
                 case 'wallet':
@@ -587,53 +1033,280 @@
                         <div class="container dashboard">
                             <div class="dashboard-header">
                                 <h1>Wallet Management</h1>
-                                <p class="subtitle">Manage your funds and transactions</p>
+                                <p class="subtitle">Manage your funds, transactions, and transfers</p>
                             </div>
                             
                             <div class="stats-grid">
                                 <div class="stat-card wallet-card">
                                     <div class="card-header">
                                         <h3><i class="fas fa-wallet"></i> Current Balance</h3>
-                                        <span class="badge badge-primary">Gold</span>
+                                        <span class="badge badge-primary" id="currentLevel">Bronze</span>
                                     </div>
                                     <div class="balance-amount">
                                         <span class="currency">GHS</span>
                                         <span id="currentBalance">0.00</span>
                                     </div>
-                                </div>
-                                
-                                <div class="stat-card">
-                                    <h3><i class="fas fa-exchange-alt"></i> Quick Actions</h3>
-                                    <div style="display: grid; gap: 1rem; margin-top: 1rem;">
-                                        <button class="btn btn-primary" onclick="showTopupModal()">
+                                    <div class="card-actions">
+                                        <button class="btn btn-light" onclick="showTopupModal()">
                                             <i class="fas fa-plus"></i> Add Funds
                                         </button>
                                         <button class="btn btn-light" onclick="showTransferModal()">
-                                            <i class="fas fa-paper-plane"></i> Transfer Funds
+                                            <i class="fas fa-paper-plane"></i> Send Money
                                         </button>
-                                        <button class="btn btn-light">
-                                            <i class="fas fa-history"></i> Transaction History
-                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <h3><i class="fas fa-chart-line"></i> Wallet Statistics</h3>
+                                    <div id="walletStats" style="margin-top: 1rem;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                                            <span>Total Credits:</span>
+                                            <span id="totalCredits">GHS 0.00</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                                            <span>Total Debits:</span>
+                                            <span id="totalDebits">GHS 0.00</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                                            <span>Transactions:</span>
+                                            <span id="totalTransactions">0</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="stat-card">
-                                <h3>Transaction History</h3>
+                                <div class="card-header">
+                                    <h3>Transaction History</h3>
+                                    <button class="btn btn-light btn-sm" onclick="refreshWallet()">
+                                        <i class="fas fa-sync-alt"></i> Refresh
+                                    </button>
+                                </div>
                                 <div id="transactionHistory">
-                                    <p style="text-align: center; padding: 2rem; color: #94a3b8;">
-                                        Loading transactions...
-                                    </p>
+                                    <div class="spinner"></div>
                                 </div>
                             </div>
                         </div>
                     `;
                     
-                    loadWalletData();
+                    await loadWalletData();
+                    break;
+
+                case 'orders':
+                    if (!authToken) {
+                        showToast('Please login first', 'error');
+                        loadPage('login');
+                        return;
+                    }
+                    
+                    mainContent.innerHTML = `
+                        <div class="container dashboard">
+                            <div class="dashboard-header">
+                                <h1>Order History</h1>
+                                <p class="subtitle">Track your data bundle purchases and transactions</p>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-history"></i> Recent Orders</h3>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <button class="btn btn-light btn-sm" onclick="refreshOrders()">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                        <button class="btn btn-primary btn-sm" onclick="loadPage('data')">
+                                            <i class="fas fa-plus"></i> New Order
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="ordersList">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    await loadOrdersData();
                     break;
             }
             
             updateNavLinks();
+        }
+
+        // Switch Network for Data Bundles
+        function switchNetwork(network) {
+            currentNetwork = network;
+            
+            // Update active tab
+            document.querySelectorAll('.network-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update bundles display
+            displayBundlesForNetwork(network);
+        }
+
+        // Display Bundles for Selected Network
+        function displayBundlesForNetwork(network) {
+            const bundlesContainer = document.getElementById('bundlesContainer');
+            const bundles = availableBundles[network] || [];
+            
+            if (bundles.length === 0) {
+                bundlesContainer.innerHTML = `
+                    <div class="stat-card" style="text-align: center; padding: 3rem;">
+                        <i class="fas fa-wifi-slash" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+                        <h3>No bundles available</h3>
+                        <p style="color: var(--text-muted);">No data bundles available for ${network} at the moment.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            bundlesContainer.innerHTML = `
+                <div class="packages-grid">
+                    ${bundles.map(bundle => `
+                        <div class="package-card">
+                            <div class="package-header">
+                                <i class="fas fa-sim-card ${network.toLowerCase()}-color"></i>
+                                <div class="package-name">${network} ${bundle.size}</div>
+                            </div>
+                            <div class="package-price">GHS ${bundle.price}</div>
+                            <div class="package-details">
+                                <div><i class="fas fa-clock"></i> ${bundle.validity}</div>
+                                <div><i class="fas fa-bolt"></i> High-speed data</div>
+                            </div>
+                            <button class="btn btn-primary btn-block" onclick="showBuyBundleModal('${network}', '${bundle.size}', ${bundle.price})">
+                                <i class="fas fa-shopping-cart"></i> Buy Now
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Show Buy Bundle Modal
+        function showBuyBundleModal(network, size, price) {
+            showModal(
+                `Buy ${network} ${size}`,
+                `
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="buyPhoneNumber" class="form-control" placeholder="+233XXXXXXXXX" required>
+                        <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
+                            Enter the phone number that will receive the data bundle
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label>Bundle Details</label>
+                        <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Network:</span>
+                                <strong>${network}</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Size:</span>
+                                <strong>${size}</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Price:</span>
+                                <strong class="mtn-color">GHS ${price}</strong>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                [
+                    {
+                        text: 'Cancel',
+                        class: 'btn-light',
+                        onclick: 'closeModal(this)'
+                    },
+                    {
+                        text: 'Confirm Purchase',
+                        class: 'btn-primary',
+                        icon: 'fas fa-shopping-cart',
+                        onclick: `buyDataBundle('${network}', '${size}', ${price})`
+                    }
+                ]
+            );
+        }
+
+        // Show Topup Modal
+        function showTopupModal() {
+            showModal(
+                'Add Funds to Wallet',
+                `
+                    <div class="form-group">
+                        <label>Amount (GHS)</label>
+                        <input type="number" id="topupAmount" class="form-control" min="5" max="5000" step="0.01" placeholder="50.00" required>
+                        <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
+                            Minimum: GHS 5.00
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Method</label>
+                        <div style="display: grid; gap: 0.5rem; margin-top: 0.5rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer;">
+                                <input type="radio" name="paymentMethod" value="paystack" checked>
+                                <i class="fas fa-credit-card" style="color: var(--primary);"></i>
+                                <span>Paystack (Card & Mobile Money)</span>
+                            </label>
+                        </div>
+                    </div>
+                `,
+                [
+                    {
+                        text: 'Cancel',
+                        class: 'btn-light',
+                        onclick: 'closeModal(this)'
+                    },
+                    {
+                        text: 'Proceed to Payment',
+                        class: 'btn-primary',
+                        icon: 'fas fa-lock',
+                        onclick: 'initiateTopup()'
+                    }
+                ]
+            );
+        }
+
+        // Show Transfer Modal
+        function showTransferModal() {
+            showModal(
+                'Send Money to Another User',
+                `
+                    <div class="form-group">
+                        <label>Recipient Email</label>
+                        <input type="email" id="transferEmail" class="form-control" placeholder="recipient@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount (GHS)</label>
+                        <input type="number" id="transferAmount" class="form-control" min="1" step="0.01" placeholder="10.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Note (Optional)</label>
+                        <input type="text" id="transferNote" class="form-control" placeholder="Payment for...">
+                    </div>
+                    <div class="form-group">
+                        <label>Your Current Balance</label>
+                        <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; text-align: center; font-size: 1.2rem;">
+                            GHS <span id="transferBalance">${document.getElementById('currentBalance')?.textContent || '0.00'}</span>
+                        </div>
+                    </div>
+                `,
+                [
+                    {
+                        text: 'Cancel',
+                        class: 'btn-light',
+                        onclick: 'closeModal(this)'
+                    },
+                    {
+                        text: 'Send Money',
+                        class: 'btn-success',
+                        icon: 'fas fa-paper-plane',
+                        onclick: 'initiateTransfer()'
+                    }
+                ]
+            );
         }
 
         // Handle Signup
@@ -716,9 +1389,7 @@
         async function loadDashboardData() {
             try {
                 const response = await fetch(`${API_BASE}/dashboard`, {
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
+                    headers: { 'Authorization': `Bearer ${authToken}` }
                 });
                 
                 const data = await response.json();
@@ -738,25 +1409,193 @@
                     document.getElementById('walletBalance').textContent = wallet.balance.toFixed(2);
                     document.getElementById('walletLevel').textContent = wallet.level;
                     document.getElementById('totalOrders').textContent = stats.total_orders;
+                    document.getElementById('ordersStatus').textContent = stats.total_orders;
                     document.getElementById('completedOrders').textContent = stats.completed_orders;
                     document.getElementById('pendingOrders').textContent = stats.pending_orders;
                     document.getElementById('totalSales').textContent = stats.total_sales.toFixed(2);
                     
                     // Update recent activity
-                    const activityList = data.data.recent_activity.map(activity => `
-                        <div style="padding: 1rem; border-bottom: 1px solid rgba(148, 163, 184, 0.1);">
-                            <div style="display: flex; justify-content: space-between;">
-                                <span>${activity.action}</span>
-                                <span style="color: #94a3b8;">${activity.time}</span>
+                    if (data.data.recent_activity && data.data.recent_activity.length > 0) {
+                        const activityList = data.data.recent_activity.map(activity => `
+                            <div style="padding: 1rem; border-bottom: 1px solid rgba(148, 163, 184, 0.1);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-weight: 600;">${activity.action}</div>
+                                        ${activity.amount ? `<div style="color: var(--accent); font-weight: 600; font-size: 0.9rem;">${activity.amount}</div>` : ''}
+                                    </div>
+                                    <div style="color: var(--text-muted); font-size: 0.875rem;">${activity.time}</div>
+                                </div>
                             </div>
-                            ${activity.amount ? `<div style="color: #22c55e; font-weight: 600;">${activity.amount}</div>` : ''}
-                        </div>
-                    `).join('');
-                    
-                    document.getElementById('recentActivity').innerHTML = activityList;
+                        `).join('');
+                        
+                        document.getElementById('recentActivity').innerHTML = activityList;
+                    } else {
+                        document.getElementById('recentActivity').innerHTML = `
+                            <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                                <i class="fas fa-history" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                                <p>No recent activity</p>
+                            </div>
+                        `;
+                    }
                 }
             } catch (error) {
+                console.error('Dashboard error:', error);
                 showToast('Error loading dashboard data', 'error');
+            }
+        }
+
+        // Load Data Bundles
+        async function loadDataBundles() {
+            try {
+                const response = await fetch(`${API_BASE}/data/bundles`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    availableBundles = data.bundles;
+                    displayBundlesForNetwork(currentNetwork);
+                }
+            } catch (error) {
+                console.error('Bundles error:', error);
+                showToast('Error loading data bundles', 'error');
+            }
+        }
+
+        // Buy Data Bundle
+        async function buyDataBundle(network, size, price) {
+            const phoneNumber = document.getElementById('buyPhoneNumber').value;
+            
+            if (!phoneNumber || phoneNumber.length < 10) {
+                showToast('Please enter a valid phone number', 'error');
+                return;
+            }
+            
+            try {
+                showToast('Processing purchase...', 'info');
+                
+                const response = await fetch(`${API_BASE}/data/buy`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        network: network,
+                        bundle_size: size,
+                        beneficiary_number: phoneNumber
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast(`Data bundle purchase initiated! Order: ${data.order_id}`, 'success');
+                    
+                    // Close modal
+                    document.querySelector('.modal.show')?.remove();
+                    
+                    // Update wallet balance
+                    if (document.getElementById('currentBalance')) {
+                        const currentBalance = parseFloat(document.getElementById('currentBalance').textContent);
+                        document.getElementById('currentBalance').textContent = (currentBalance - price).toFixed(2);
+                    }
+                    
+                    // Redirect to orders page
+                    setTimeout(() => loadPage('orders'), 1500);
+                } else {
+                    showToast(data.error || 'Purchase failed', 'error');
+                }
+            } catch (error) {
+                console.error('Purchase error:', error);
+                showToast('Network error. Please try again.', 'error');
+            }
+        }
+
+        // Initiate Wallet Top-up
+        async function initiateTopup() {
+            const amount = document.getElementById('topupAmount').value;
+            
+            if (!amount || amount < 5) {
+                showToast('Minimum amount is GHS 5.00', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/wallet/topup/initialize`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ amount: parseFloat(amount) })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Redirect to Paystack payment page
+                    window.open(data.authorization_url, '_blank');
+                    
+                    // Close modal
+                    document.querySelector('.modal.show')?.remove();
+                    
+                    showToast('Redirecting to payment page...', 'info');
+                } else {
+                    showToast(data.error || 'Payment initialization failed', 'error');
+                }
+            } catch (error) {
+                console.error('Topup error:', error);
+                showToast('Payment initialization failed', 'error');
+            }
+        }
+
+        // Initiate Transfer
+        async function initiateTransfer() {
+            const email = document.getElementById('transferEmail').value;
+            const amount = document.getElementById('transferAmount').value;
+            const note = document.getElementById('transferNote').value;
+            
+            if (!email || !amount || amount < 1) {
+                showToast('Please enter valid recipient email and amount', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/wallet/transfer`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        recipient_email: email,
+                        amount: parseFloat(amount),
+                        note: note
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast(`Transfer completed successfully!`, 'success');
+                    
+                    // Close modal
+                    document.querySelector('.modal.show')?.remove();
+                    
+                    // Update wallet balance
+                    if (document.getElementById('currentBalance')) {
+                        document.getElementById('currentBalance').textContent = data.new_balance.toFixed(2);
+                    }
+                    
+                    // Refresh wallet data
+                    if (window.location.hash === '#wallet') {
+                        loadWalletData();
+                    }
+                } else {
+                    showToast(data.error || 'Transfer failed', 'error');
+                }
+            } catch (error) {
+                console.error('Transfer error:', error);
+                showToast('Transfer failed', 'error');
             }
         }
 
@@ -764,49 +1603,245 @@
         async function loadWalletData() {
             try {
                 const response = await fetch(`${API_BASE}/wallet`, {
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
+                    headers: { 'Authorization': `Bearer ${authToken}` }
                 });
                 
                 const data = await response.json();
                 
                 if (data.success) {
                     document.getElementById('currentBalance').textContent = data.wallet.balance.toFixed(2);
+                    document.getElementById('currentLevel').textContent = data.wallet.level;
+                    
+                    // Calculate statistics
+                    if (data.transactions && data.transactions.length > 0) {
+                        let totalCredits = 0;
+                        let totalDebits = 0;
+                        
+                        data.transactions.forEach(tx => {
+                            if (tx.type.includes('credit') || tx.type === 'transfer_in') {
+                                totalCredits += parseFloat(tx.amount);
+                            } else {
+                                totalDebits += parseFloat(tx.amount);
+                            }
+                        });
+                        
+                        document.getElementById('totalCredits').textContent = `GHS ${totalCredits.toFixed(2)}`;
+                        document.getElementById('totalDebits').textContent = `GHS ${totalDebits.toFixed(2)}`;
+                        document.getElementById('totalTransactions').textContent = data.transactions.length;
+                    }
                     
                     // Display transactions
                     if (data.transactions && data.transactions.length > 0) {
                         const transactionsHTML = data.transactions.map(tx => `
                             <div style="padding: 1rem; border-bottom: 1px solid rgba(148, 163, 184, 0.1);">
-                                <div style="display: flex; justify-content: space-between;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                     <div>
-                                        <div style="font-weight: 600;">${tx.type}</div>
-                                        <div style="color: #94a3b8; font-size: 0.875rem;">${tx.description || 'No description'}</div>
+                                        <div style="font-weight: 600; margin-bottom: 0.25rem;">${tx.description || tx.type}</div>
+                                        <div style="color: var(--text-muted); font-size: 0.875rem;">
+                                            ${tx.transaction_id}
+                                        </div>
                                     </div>
                                     <div style="text-align: right;">
-                                        <div style="font-weight: 600; color: ${tx.type === 'credit' ? '#22c55e' : '#ef4444'}">
-                                            ${tx.type === 'credit' ? '+' : '-'}GHS ${tx.amount}
+                                        <div style="font-weight: 600; color: ${tx.type.includes('credit') || tx.type === 'transfer_in' ? 'var(--accent)' : 'var(--danger)'}">
+                                            ${tx.type.includes('credit') || tx.type === 'transfer_in' ? '+' : '-'}GHS ${parseFloat(tx.amount).toFixed(2)}
                                         </div>
-                                        <div style="color: #94a3b8; font-size: 0.875rem;">${new Date(tx.created_at).toLocaleDateString()}</div>
+                                        <div style="color: var(--text-muted); font-size: 0.875rem;">
+                                            ${new Date(tx.created_at).toLocaleDateString()}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         `).join('');
                         
                         document.getElementById('transactionHistory').innerHTML = transactionsHTML;
+                    } else {
+                        document.getElementById('transactionHistory').innerHTML = `
+                            <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                                <i class="fas fa-exchange-alt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                                <h3>No transactions yet</h3>
+                                <p>Start by adding funds to your wallet</p>
+                                <button class="btn btn-primary" style="margin-top: 1rem;" onclick="showTopupModal()">
+                                    <i class="fas fa-plus"></i> Add Funds
+                                </button>
+                            </div>
+                        `;
                     }
                 }
             } catch (error) {
+                console.error('Wallet error:', error);
                 showToast('Error loading wallet data', 'error');
             }
+        }
+
+        // Load Orders Data
+        async function loadOrdersData() {
+            try {
+                const response = await fetch(`${API_BASE}/orders`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    if (data.orders && data.orders.length > 0) {
+                        const ordersHTML = `
+                            <table class="orders-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Product</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.orders.map(order => `
+                                        <tr onclick="showOrderDetails('${order.order_id}')" style="cursor: pointer;">
+                                            <td>
+                                                <strong>${order.order_id}</strong>
+                                                <div style="color: var(--text-muted); font-size: 0.875rem;">
+                                                    ${order.beneficiary_number || 'N/A'}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                ${order.product_name || 'Data Bundle'}
+                                                <div style="color: var(--text-muted); font-size: 0.875rem;">
+                                                    ${order.network} ${order.bundle_size || ''}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <strong>GHS ${order.amount}</strong>
+                                            </td>
+                                            <td>
+                                                <span class="badge ${order.status === 'completed' ? 'badge-success' : order.status === 'processing' ? 'badge-warning' : 'badge-primary'}">
+                                                    ${order.status}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                ${new Date(order.created_at).toLocaleDateString()}
+                                                <div style="color: var(--text-muted); font-size: 0.875rem;">
+                                                    ${new Date(order.created_at).toLocaleTimeString()}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                            ${data.pagination.total > data.orders.length ? `
+                                <div style="text-align: center; margin-top: 1rem;">
+                                    <button class="btn btn-light" onclick="loadMoreOrders()">
+                                        Load More (${data.pagination.total - data.orders.length} remaining)
+                                    </button>
+                                </div>
+                            ` : ''}
+                        `;
+                        
+                        document.getElementById('ordersList').innerHTML = ordersHTML;
+                    } else {
+                        document.getElementById('ordersList').innerHTML = `
+                            <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                                <i class="fas fa-shopping-cart" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                                <h3>No orders yet</h3>
+                                <p>Purchase your first data bundle</p>
+                                <button class="btn btn-primary" style="margin-top: 1rem;" onclick="loadPage('data')">
+                                    <i class="fas fa-wifi"></i> Buy Data Bundle
+                                </button>
+                            </div>
+                        `;
+                    }
+                }
+            } catch (error) {
+                console.error('Orders error:', error);
+                showToast('Error loading orders', 'error');
+            }
+        }
+
+        // Show Order Details
+        async function showOrderDetails(orderId) {
+            try {
+                const response = await fetch(`${API_BASE}/orders/${orderId}`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const order = data.order;
+                    showModal(
+                        `Order Details: ${order.order_id}`,
+                        `
+                            <div style="display: grid; gap: 1rem;">
+                                <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Status:</span>
+                                        <strong><span class="badge ${order.status === 'completed' ? 'badge-success' : order.status === 'processing' ? 'badge-warning' : 'badge-primary'}">${order.status}</span></strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Product:</span>
+                                        <strong>${order.product_name}</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Network:</span>
+                                        <strong>${order.network}</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Bundle Size:</span>
+                                        <strong>${order.bundle_size || 'N/A'}</strong>
+                                    </div>
+                                </div>
+                                
+                                <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Amount:</span>
+                                        <strong class="mtn-color">GHS ${order.amount}</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Recipient:</span>
+                                        <strong>${order.beneficiary_number || 'N/A'}</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Order Date:</span>
+                                        <strong>${new Date(order.created_at).toLocaleString()}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        `,
+                        [
+                            {
+                                text: 'Close',
+                                class: 'btn-light',
+                                onclick: 'closeModal(this)'
+                            },
+                            {
+                                text: 'Buy Another',
+                                class: 'btn-primary',
+                                icon: 'fas fa-shopping-cart',
+                                onclick: `closeModal(this); loadPage('data');`
+                            }
+                        ]
+                    );
+                }
+            } catch (error) {
+                showToast('Error loading order details', 'error');
+            }
+        }
+
+        // Refresh Wallet
+        function refreshWallet() {
+            loadWalletData();
+            showToast('Wallet data refreshed', 'info');
+        }
+
+        // Refresh Orders
+        function refreshOrders() {
+            loadOrdersData();
+            showToast('Orders refreshed', 'info');
         }
 
         // Update Navigation Links
         function updateNavLinks() {
             const authLink = document.getElementById('authLink');
-            const navLinks = document.querySelectorAll('.nav-link');
-            
-            navLinks.forEach(link => link.classList.remove('active'));
             
             if (authToken) {
                 authLink.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
@@ -829,28 +1864,20 @@
         // Toggle Mobile Menu
         function toggleMenu() {
             const navMenu = document.getElementById('navMenu');
-            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
-        }
-
-        // Show Topup Modal
-        function showTopupModal() {
-            alert('Topup functionality would be implemented here with Paystack integration');
-        }
-
-        // Show Transfer Modal
-        function showTransferModal() {
-            alert('Wallet-to-wallet transfer functionality would be implemented here');
+            navMenu.classList.toggle('active');
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            if (authToken) {
-                loadPage('dashboard');
-            } else {
-                loadPage('home');
-            }
+            const hash = window.location.hash.substring(1) || 'home';
+            loadPage(hash);
+            
+            // Handle browser back/forward
+            window.addEventListener('hashchange', () => {
+                const hash = window.location.hash.substring(1) || 'home';
+                loadPage(hash);
+            });
         });
     </script>
 </body>
-
 </html>
